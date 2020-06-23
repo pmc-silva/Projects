@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import './map.css';
 
 class Map extends Component {
-	componentDidMount() {
+	drawMap = () => {
 		this.map = L.map('mapid').setView([10, 0], 2);
 
 		this.mapLayer = L.tileLayer(
@@ -23,6 +23,16 @@ class Map extends Component {
 				radius: element.number,
 			}).addTo(this.map);
 		});
+	};
+
+	componentDidMount() {
+		this.drawMap();
+	}
+
+	componentDidUpdate() {
+		this.map.remove();
+
+		this.drawMap();
 	}
 
 	render() {

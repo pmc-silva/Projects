@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Spinner } from 'reactstrap';
+import { Table } from 'reactstrap';
 import './countries.css';
 
 class Countries extends Component {

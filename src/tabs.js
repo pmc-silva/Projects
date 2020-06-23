@@ -34,8 +34,15 @@ class Tabs extends React.Component {
 							<InputGroupAddon addonType="prepend">
 								<Button
 									onClick={() => this.props.onSortClick()}
+									color={this.props.colorType}
 								>
-									î
+									<i
+										className={
+											this.props.order === -1
+												? 'fas fa-sort-numeric-up-alt'
+												: 'fas fa-sort-numeric-up'
+										}
+									></i>
 								</Button>
 							</InputGroupAddon>
 							<Input placeholder="search..." />
@@ -56,18 +63,21 @@ class Tabs extends React.Component {
 		);
 	};
 
-	navItems = (tabNumber, tabName) => {
+	navItems = (tabNumber, tabName, color) => {
 		return (
 			<NavItem>
 				<NavLink
-					className={classNames({
-						active: this.props.tab === tabNumber,
-					})}
+					className={classNames(
+						{
+							active: this.props.tab === tabNumber,
+						},
+						'bg-'.concat(color).concat(' clearfix')
+					)}
 					onClick={() => {
 						this.props.onTabChange(tabNumber);
 					}}
 				>
-					{tabName}
+					<p className="text-white">{tabName}</p>
 				</NavLink>
 			</NavItem>
 		);
@@ -76,10 +86,10 @@ class Tabs extends React.Component {
 	render() {
 		return (
 			<div>
-				<Nav tabs pills justified>
-					{this.navItems('1', 'Cases')}
-					{this.navItems('2', 'Deaths')}
-					{this.navItems('3', 'Recovered')}
+				<Nav tabs justified>
+					{this.navItems('1', 'Cases', 'primary')}
+					{this.navItems('2', 'Deaths', 'danger')}
+					{this.navItems('3', 'Recovered', 'success')}
 				</Nav>
 				<TabContent activeTab={this.props.tab}>
 					{this.panes('1', 'primary')}

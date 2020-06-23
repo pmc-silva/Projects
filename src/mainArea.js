@@ -27,41 +27,43 @@ class MainArea extends Component {
 	}
 
 	changeData = (tabNumber, countriesData) => {
-		let orderedCountries = {};
-		switch (tabNumber) {
-			case '2':
-				orderedCountries = countriesData.sort(
-					this.dynamicSort('deaths', false)
-				);
-				this.setState({
-					color: 'red',
-					dataToShow: 'deaths',
-				});
-				break;
-			case '3':
-				orderedCountries = countriesData.sort(
-					this.dynamicSort('recovered', false)
-				);
-				this.setState({
-					color: 'green',
-					dataToShow: 'recovered',
-				});
-				break;
-			default:
-				orderedCountries = countriesData.sort(
-					this.dynamicSort('cases', false)
-				);
-				this.setState({
-					color: 'blue',
-					dataToShow: 'cases',
-				});
-				break;
+		if (tabNumber !== this.state.tab) {
+			let orderedCountries = {};
+			switch (tabNumber) {
+				case '2':
+					orderedCountries = countriesData.sort(
+						this.dynamicSort('deaths', false)
+					);
+					this.setState({
+						color: 'red',
+						dataToShow: 'deaths',
+					});
+					break;
+				case '3':
+					orderedCountries = countriesData.sort(
+						this.dynamicSort('recovered', false)
+					);
+					this.setState({
+						color: 'green',
+						dataToShow: 'recovered',
+					});
+					break;
+				default:
+					orderedCountries = countriesData.sort(
+						this.dynamicSort('cases', false)
+					);
+					this.setState({
+						color: 'blue',
+						dataToShow: 'cases',
+					});
+					break;
+			}
+			this.setState({
+				tab: tabNumber,
+				sortOrder: 1,
+				countriesData: orderedCountries,
+			});
 		}
-		this.setState({
-			tab: tabNumber,
-			sortOrder: 1,
-			countriesData: orderedCountries,
-		});
 	};
 
 	dynamicSort = (property, dynamic) => {
@@ -97,8 +99,26 @@ class MainArea extends Component {
 		}));
 	};
 
+	setColorType = (color) => {
+		switch (color) {
+			case 'red':
+				return 'danger';
+			case 'green':
+				return 'success';
+			default:
+				return 'primary';
+		}
+	};
+
 	render() {
-		const { allData, countriesData, dataToShow, color, tab } = this.state;
+		const {
+			allData,
+			countriesData,
+			dataToShow,
+			color,
+			tab,
+			sortOrder,
+		} = this.state;
 		return (
 			<Container fluid>
 				<Row>
@@ -112,7 +132,9 @@ class MainArea extends Component {
 								onSortClick={() =>
 									this.handleSortClick(countriesData, true)
 								}
+								order={sortOrder}
 								colorState={color}
+								colorType={this.setColorType(color)}
 								whatToShow={dataToShow}
 								tab={tab}
 								allData={allData[dataToShow]}
