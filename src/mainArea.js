@@ -22,43 +22,50 @@ class MainArea extends Component {
 	async componentDidMount() {
 		const allData = await this.api.all();
 		const countriesData = await this.api.countries();
-		countriesData.sort(this.dynamicSort(false));
+		countriesData.sort(this.dynamicSort(this.state.dataToShow, false));
 		this.setState({ countriesData, allData });
 	}
 
-	changeData = (tabNumber) => {
+	changeData = (tabNumber, countriesData) => {
+		let orderedCountries = {};
 		switch (tabNumber) {
 			case '2':
+				orderedCountries = countriesData.sort(
+					this.dynamicSort('deaths', false)
+				);
 				this.setState({
-					tab: tabNumber,
 					color: 'red',
 					dataToShow: 'deaths',
-					sortOrder: 1,
 				});
 				break;
 			case '3':
+				orderedCountries = countriesData.sort(
+					this.dynamicSort('recovered', false)
+				);
 				this.setState({
-					tab: tabNumber,
 					color: 'green',
 					dataToShow: 'recovered',
-					sortOrder: 1,
 				});
 				break;
 			default:
+				orderedCountries = countriesData.sort(
+					this.dynamicSort('cases', false)
+				);
 				this.setState({
-					tab: tabNumber,
 					color: 'blue',
 					dataToShow: 'cases',
-					sortOrder: 1,
 				});
 				break;
 		}
-		this.handleSortClick(this.state.countriesData, false);
+		this.setState({
+			tab: tabNumber,
+			sortOrder: 1,
+			countriesData: orderedCountries,
+		});
 	};
 
-	dynamicSort = (dynamic) => {
+	dynamicSort = (property, dynamic) => {
 		let newSortOrder = 1;
-		const property = this.state.dataToShow;
 		if (dynamic) {
 			newSortOrder = this.state.sortOrder * -1;
 			this.setState({ sortOrder: newSortOrder });
@@ -67,19 +74,19 @@ class MainArea extends Component {
 		return function (a, b) {
 			var result =
 				a[property] < b[property]
-					? -1
-					: a[property] > b[property]
 					? 1
+					: a[property] > b[property]
+					? -1
 					: 0;
 			return result * newSortOrder;
 		};
 	};
 
 	handleSortClick = (array, dynamic) => {
-		const newCountriesData = array.sort(this.dynamicSort(dynamic));
-		this.setState(
-			(previousState) => (previousState.countriesData = newCountriesData)
+		const newCountriesData = array.sort(
+			this.dynamicSort(this.state.dataToShow, dynamic)
 		);
+		this.setState({ countriesData: newCountriesData });
 	};
 
 	changeCountriesData = () => {
@@ -99,7 +106,9 @@ class MainArea extends Component {
 						{Object.keys(allData).length > 0 &&
 						Object.keys(countriesData).length > 0 ? (
 							<Tabs
-								onTabChange={(tab) => this.changeData(tab)}
+								onTabChange={(tab) => {
+									this.changeData(tab, countriesData);
+								}}
 								onSortClick={() =>
 									this.handleSortClick(countriesData, true)
 								}
