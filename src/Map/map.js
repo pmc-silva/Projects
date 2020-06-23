@@ -5,20 +5,24 @@ import './map.css';
 
 class Map extends Component {
 	componentDidMount() {
-		this.map = L.map('mapid').setView([0, 0], 1);
+		this.map = L.map('mapid').setView([10, 0], 2);
 
-		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			attribution:
-				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-			noWrap: true,
-		}).addTo(this.map);
-
-		this.circle = L.circle([40.6067353, -8.6428569], {
-			color: 'red',
-			fillColor: '#f03',
-			fillOpacity: 0.5,
-			radius: 500,
-		}).addTo(this.map);
+		this.mapLayer = L.tileLayer(
+			'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			{
+				attribution:
+					'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+				noWrap: true,
+			}
+		).addTo(this.map);
+		this.circles = this.props.valuesArray.forEach((element) => {
+			this.circle = L.circle([element.lat, element.long], {
+				color: this.props.color,
+				fillColor: this.props.color,
+				fillOpacity: 0.5,
+				radius: element.number,
+			}).addTo(this.map);
+		});
 	}
 
 	render() {

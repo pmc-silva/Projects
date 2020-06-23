@@ -7,41 +7,49 @@ import {
 	NavLink,
 	TabContent,
 	TabPane,
+	Input,
+	InputGroup,
+	InputGroupAddon,
+	Button,
 } from 'reactstrap';
 import classNames from 'classnames';
 import CovidData from './covidData';
 import Countries from './countries';
 
 class Tabs extends React.Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			activeTab: '1',
-		};
-	}
-
-	toggle = (tab) => {
-		if (this.state.activeTab !== tab) {
-			this.setState({ activeTab: tab });
-		}
-	};
-
-	filteredArray = (arr, arrFilter) => {
-		const filtArray = arr;
-		if (arrFilter === '') {
-			return filtArray;
-		}
-		return filtArray.filter((task) => task.complete === arrFilter);
-	};
-
-	panes = (tabNumber, covidState, color) => {
+	panes = (tabNumber, color) => {
 		return (
 			<TabPane tabId={tabNumber}>
 				<Row>
 					<Col sm="12">
-						<CovidData dataToShow={covidState} colorState={color} />{' '}
-						<Countries dataToShow={covidState} colorState={color} />
+						<CovidData
+							colorState={this.props.colorState}
+							allDataArray={this.props.allData}
+						/>
+					</Col>
+				</Row>
+				<Row>
+					<Col>
+						<InputGroup>
+							<InputGroupAddon addonType="prepend">
+								<Button
+									onClick={() => this.props.onSortClick()}
+								>
+									î
+								</Button>
+							</InputGroupAddon>
+							<Input placeholder="search..." />
+						</InputGroup>
+					</Col>
+				</Row>
+				<Row>
+					<Col>
+						<Countries
+							dataToShow={this.props.whatToShow}
+							colorState={color}
+							countriesDataArray={this.props.countriesData}
+							onSortClick={this.props.onSortClick}
+						/>
 					</Col>
 				</Row>
 			</TabPane>
@@ -53,10 +61,10 @@ class Tabs extends React.Component {
 			<NavItem>
 				<NavLink
 					className={classNames({
-						active: this.state.activeTab === tabNumber,
+						active: this.props.tab === tabNumber,
 					})}
 					onClick={() => {
-						this.toggle(tabNumber);
+						this.props.onTabChange(tabNumber);
 					}}
 				>
 					{tabName}
@@ -73,10 +81,10 @@ class Tabs extends React.Component {
 					{this.navItems('2', 'Deaths')}
 					{this.navItems('3', 'Recovered')}
 				</Nav>
-				<TabContent activeTab={this.state.activeTab}>
-					{this.panes('1', 'cases', 'primary')}
-					{this.panes('2', 'deaths', 'danger')}
-					{this.panes('3', 'recovered', 'success')}
+				<TabContent activeTab={this.props.tab}>
+					{this.panes('1', 'primary')}
+					{this.panes('2', 'danger')}
+					{this.panes('3', 'success')}
 				</TabContent>
 			</div>
 		);
