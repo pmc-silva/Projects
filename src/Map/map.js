@@ -4,9 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import './map.css';
 
 class Map extends Component {
-	drawMap = () => {
-		this.map = L.map('mapid').setView([10, 0], 2);
-
+	drawMap() {
 		this.mapLayer = L.tileLayer(
 			'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 			{
@@ -15,24 +13,29 @@ class Map extends Component {
 				noWrap: true,
 			}
 		).addTo(this.map);
+	}
+	drawCircles = () => {
+		this.circleLayout = L.layerGroup();
 		this.circles = this.props.valuesArray.forEach((element) => {
 			this.circle = L.circle([element.lat, element.long], {
 				color: this.props.color,
 				fillColor: this.props.color,
 				fillOpacity: 0.5,
 				radius: element.number,
-			}).addTo(this.map);
+			}).addTo(this.circleLayout);
 		});
+		this.circleLayout.addTo(this.map);
 	};
 
 	componentDidMount() {
+		this.map = L.map('mapid').setView([10, 0], 2);
 		this.drawMap();
+		this.drawCircles();
 	}
 
 	componentDidUpdate() {
-		this.map.remove();
-
-		this.drawMap();
+		this.map.removeLayer(this.circleLayout);
+		this.drawCircles();
 	}
 
 	render() {
