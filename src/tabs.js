@@ -45,7 +45,7 @@ class Tabs extends React.Component {
 									></i>
 								</Button>
 							</InputGroupAddon>
-							<Input placeholder="search..." />
+							<Input searplaceholder="search..." />
 						</InputGroup>
 					</Col>
 				</Row>
@@ -56,6 +56,7 @@ class Tabs extends React.Component {
 							colorState={color}
 							countriesDataArray={this.props.countriesData}
 							onSortClick={this.props.onSortClick}
+							countriesData={this.props.countriesData}
 						/>
 					</Col>
 				</Row>

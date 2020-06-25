@@ -12,9 +12,11 @@ class MainArea extends Component {
 			tab: '1',
 			color: 'blue',
 			dataToShow: 'cases',
+			searchText: null,
 			sortOrder: 1,
 			allData: {},
 			countriesData: {},
+			historicalData: {},
 		};
 		this.api = new NovelCovid();
 	}
@@ -22,8 +24,9 @@ class MainArea extends Component {
 	async componentDidMount() {
 		const allData = await this.api.all();
 		const countriesData = await this.api.countries();
+		const historicalData = await this.api.historical(true);
 		countriesData.sort(this.dynamicSort(this.state.dataToShow, false));
-		this.setState({ countriesData, allData });
+		this.setState({ countriesData, allData, historicalData });
 	}
 
 	changeData = (tabNumber, countriesData) => {
@@ -99,6 +102,18 @@ class MainArea extends Component {
 		}));
 	};
 
+	sendHistoricalData = (historyArray) => {
+		let result = [];
+		const tempHistoricalArray = Object.values(historyArray)[
+			this.state.tab - 1
+		];
+		for (const [date, value] of Object.entries(tempHistoricalArray)) {
+			result.push({ date: `${date}`, value: `${value}` });
+		}
+
+		return result;
+	};
+
 	setColorType = (color) => {
 		switch (color) {
 			case 'red':
@@ -118,6 +133,7 @@ class MainArea extends Component {
 			color,
 			tab,
 			sortOrder,
+			historicalData,
 		} = this.state;
 		return (
 			<Container fluid>
@@ -158,7 +174,16 @@ class MainArea extends Component {
 						</Row>
 
 						<Row>
-							<Chart />
+							{Object.keys(historicalData).length > 0 ? (
+								<Chart
+									color={color}
+									historyArray={() =>
+										this.sendHistoricalData(historicalData)
+									}
+								/>
+							) : (
+								<Spinner color="dark" />
+							)}
 						</Row>
 					</Col>
 				</Row>
