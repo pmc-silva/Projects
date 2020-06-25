@@ -31,7 +31,16 @@ class Chart extends Component {
 							horizontal={false}
 							vertical={false}
 						/>
-						<XAxis dataKey="date" interval={3} />
+						<XAxis
+							dataKey="date"
+							interval={2}
+							tickFormatter={(tick) =>
+								new Date(tick).toLocaleDateString('en-US', {
+									day: 'numeric',
+									month: 'short',
+								})
+							}
+						/>
 						<YAxis
 							tickFormatter={(tick) =>
 								new Intl.NumberFormat('ru-RU', {

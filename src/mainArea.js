@@ -17,6 +17,7 @@ class MainArea extends Component {
 			allData: {},
 			countriesData: {},
 			historicalData: {},
+			filteredCountries: {},
 		};
 		this.api = new NovelCovid();
 	}
@@ -26,7 +27,12 @@ class MainArea extends Component {
 		const countriesData = await this.api.countries();
 		const historicalData = await this.api.historical(true);
 		countriesData.sort(this.dynamicSort(this.state.dataToShow, false));
-		this.setState({ countriesData, allData, historicalData });
+		this.setState({
+			filteredCountries: countriesData,
+			countriesData,
+			allData,
+			historicalData,
+		});
 	}
 
 	changeData = (tabNumber, countriesData) => {
@@ -95,7 +101,7 @@ class MainArea extends Component {
 	};
 
 	changeCountriesData = () => {
-		return this.state.countriesData.map((c) => ({
+		return this.state.filteredCountries.map((c) => ({
 			lat: c.countryInfo.lat,
 			long: c.countryInfo.long,
 			number: c[this.state.dataToShow],
@@ -108,18 +114,21 @@ class MainArea extends Component {
 			this.state.tab - 1
 		];
 
-		let dataOptions = { day: 'numeric', month: 'short' };
 		for (const [date, value] of Object.entries(tempHistoricalArray)) {
 			result.push({
-				date: new Date(`${date}`).toLocaleDateString(
-					'en-US',
-					dataOptions
-				),
+				date: `${date}`,
 				value: `${value}`,
 			});
 		}
 
 		return result;
+	};
+
+	filterCountriesData = (newFilter, array) => {
+		const filteredArray = array.filter((item) =>
+			item.country.toUpperCase().includes(newFilter.toUpperCase())
+		);
+		this.setState({ filteredCountries: filteredArray });
 	};
 
 	setColorType = (color) => {
@@ -142,11 +151,12 @@ class MainArea extends Component {
 			tab,
 			sortOrder,
 			historicalData,
+			filteredCountries,
 		} = this.state;
 		return (
-			<Container fluid>
+			<Container className="bg-dark" fluid>
 				<Row>
-					<Col sm="4">
+					<Col md="4" className="bg-white">
 						{Object.keys(allData).length > 0 &&
 						Object.keys(countriesData).length > 0 ? (
 							<Tabs
@@ -154,7 +164,10 @@ class MainArea extends Component {
 									this.changeData(tab, countriesData);
 								}}
 								onSortClick={() =>
-									this.handleSortClick(countriesData, true)
+									this.handleSortClick(
+										filteredCountries,
+										true
+									)
 								}
 								order={sortOrder}
 								colorState={color}
@@ -162,13 +175,19 @@ class MainArea extends Component {
 								whatToShow={dataToShow}
 								tab={tab}
 								allData={allData[dataToShow]}
-								countriesData={countriesData}
+								countriesData={filteredCountries}
+								filterCountries={(text) =>
+									this.filterCountriesData(
+										text,
+										countriesData
+									)
+								}
 							></Tabs>
 						) : (
 							<Spinner color="dark" />
 						)}
 					</Col>
-					<Col sm="8">
+					<Col>
 						<Row>
 							{Object.keys(countriesData).length > 0 ? (
 								<Map

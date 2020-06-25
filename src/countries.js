@@ -9,7 +9,7 @@ class Countries extends Component {
 				<Table hover striped size="sm">
 					<tbody>
 						{this.props.countriesDataArray.map((item) => (
-							<tr color={this.props.colorState}>
+							<tr>
 								<td align="left">
 									{new Intl.NumberFormat('ru-RU', {
 										style: 'decimal',
