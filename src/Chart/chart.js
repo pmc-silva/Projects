@@ -7,6 +7,8 @@ import {
 	XAxis,
 	YAxis,
 	ResponsiveContainer,
+	Legend,
+	ReferenceLine,
 } from 'recharts';
 import './chart.css';
 
@@ -24,16 +26,29 @@ class Chart extends Component {
 							bottom: 0,
 						}}
 					>
-						<CartesianGrid strokeDasharray="3 3" />
-						<XAxis dataKey="date" />
-						<YAxis />
+						<CartesianGrid
+							strokeDasharray="0 0"
+							horizontal={false}
+							vertical={false}
+						/>
+						<XAxis dataKey="date" interval={3} />
+						<YAxis
+							tickFormatter={(tick) =>
+								new Intl.NumberFormat('ru-RU', {
+									style: 'decimal',
+								}).format(tick / 1000) + ' k'
+							}
+						/>
 						<Tooltip />
 						<Area
+							name={this.props.dataToShow}
 							type="monotone"
 							dataKey="value"
-							stroke="#428bca"
+							stroke="none"
 							fill={this.props.color}
 						/>
+						<Legend iconType="square" verticalAlign="top" />
+						<ReferenceLine />
 					</AreaChart>
 				</ResponsiveContainer>
 			</div>

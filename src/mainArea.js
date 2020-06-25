@@ -107,8 +107,16 @@ class MainArea extends Component {
 		const tempHistoricalArray = Object.values(historyArray)[
 			this.state.tab - 1
 		];
+
+		let dataOptions = { day: 'numeric', month: 'short' };
 		for (const [date, value] of Object.entries(tempHistoricalArray)) {
-			result.push({ date: `${date}`, value: `${value}` });
+			result.push({
+				date: new Date(`${date}`).toLocaleDateString(
+					'en-US',
+					dataOptions
+				),
+				value: `${value}`,
+			});
 		}
 
 		return result;
@@ -177,6 +185,7 @@ class MainArea extends Component {
 							{Object.keys(historicalData).length > 0 ? (
 								<Chart
 									color={color}
+									dataToShow={dataToShow}
 									historyArray={() =>
 										this.sendHistoricalData(historicalData)
 									}
