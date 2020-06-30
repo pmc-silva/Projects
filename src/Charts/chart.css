@@ -1,0 +1,38 @@
+#container {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	padding-bottom: 15px;
+	margin: 0px 10px 10px 10px;
+	width: 64vw;
+	height: 38vh;
+	background-color: #fff;
+}
+
+#chartContainer {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 100vw;
+	height: 100vh;
+}
+
+#countryDataContainer {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	padding-bottom: 15px;
+	width: 100vw;
+	height: 100vh;
+}
+
+#countryChart {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: 30px;
+	margin: 10px 10px 10px 10px;
+	width: 80vw;
+	height: 50vh;
+	background-color: #fff;
+}

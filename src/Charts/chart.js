@@ -35,7 +35,7 @@ class Chart extends Component {
 							dataKey="date"
 							interval={2}
 							tickFormatter={(tick) =>
-								new Date(tick).toLocaleDateString('en-US', {
+								new Date(tick).toLocaleDateString('en-En', {
 									day: 'numeric',
 									month: 'short',
 								})

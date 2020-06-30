@@ -1,4 +1,12 @@
 #countriesList {
 	height: 80vh;
+	width: 100vw;
 	overflow-y: auto;
+}
+
+#countriesListTabs {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	margin: 10px;
 }

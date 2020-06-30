@@ -15,11 +15,12 @@ import {
 import classNames from 'classnames';
 import CovidData from './covidData';
 import Countries from './countries';
+import './countries.css';
 
 class Tabs extends React.Component {
 	panes = (tabNumber, color) => {
 		return (
-			<TabPane tabId={tabNumber}>
+			<div>
 				<Row>
 					<Col sm="12">
 						<CovidData
@@ -56,17 +57,19 @@ class Tabs extends React.Component {
 						</InputGroup>
 					</Col>
 				</Row>
-				<Row>
-					<Col>
-						<Countries
-							dataToShow={this.props.whatToShow}
-							colorState={color}
-							countriesDataArray={this.props.countriesData}
-							onSortClick={this.props.onSortClick}
-						/>
-					</Col>
-				</Row>
-			</TabPane>
+				<TabPane tabId={tabNumber}>
+					<Row>
+						<Col>
+							<Countries
+								dataToShow={this.props.whatToShow}
+								colorState={color}
+								countriesDataArray={this.props.countriesData}
+								onSortClick={this.props.onSortClick}
+							/>
+						</Col>
+					</Row>
+				</TabPane>
+			</div>
 		);
 	};
 

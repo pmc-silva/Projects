@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Spinner } from 'reactstrap';
 import Map from './Map/map';
-import Chart from './Chart/chart';
+import Chart from './Charts/chart';
 import Tabs from './tabs';
 import { NovelCovid } from 'novelcovid';
+import './mainArea.css';
 
 class MainArea extends Component {
 	constructor(props) {
@@ -24,9 +25,10 @@ class MainArea extends Component {
 
 	async componentDidMount() {
 		const allData = await this.api.all();
-		const countriesData = await this.api.countries();
+		const countriesData = await this.api.countries(null, {
+			sort: `${this.state.dataToShow}`,
+		});
 		const historicalData = await this.api.historical(true);
-		countriesData.sort(this.dynamicSort(this.state.dataToShow, false));
 		this.setState({
 			filteredCountries: countriesData,
 			countriesData,
@@ -156,7 +158,7 @@ class MainArea extends Component {
 		return (
 			<Container className="bg-dark" fluid>
 				<Row>
-					<Col md="4" className="bg-white">
+					<Col md="4" className="bg-white" id="covidList">
 						{Object.keys(allData).length > 0 &&
 						Object.keys(countriesData).length > 0 ? (
 							<Tabs
