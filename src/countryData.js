@@ -32,13 +32,18 @@ class CountryData extends Component {
 		let result = [];
 		const tempHistoricalArray = historyArray.timeline;
 
-		for (const [date, value] of Object.entries(tempHistoricalArray.cases)) {
-			result.push({
-				date: `${date}`,
-				value: `${value}`,
-			});
-		}
+		//console.log(Object.keys(tempHistoricalArray));
 
+		for (const [type] of Object.entries(tempHistoricalArray)) {
+			for (const [date, value] of Object.entries(
+				tempHistoricalArray[type]
+			)) {
+				result.push({
+					date: `${date}`,
+					[type]: `${value}`,
+				});
+			}
+		}
 		return result;
 	};
 	render() {
