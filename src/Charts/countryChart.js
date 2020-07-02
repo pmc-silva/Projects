@@ -7,6 +7,8 @@ import {
 	YAxis,
 	CartesianGrid,
 	Line,
+	Tooltip,
+	Legend,
 } from 'recharts';
 
 class CountryChart extends Component {
@@ -15,15 +17,7 @@ class CountryChart extends Component {
 			<div id="countryChart">
 				<ResponsiveContainer maxHeight="50vh">
 					<LineChart data={this.props.historyArray()}>
-						<XAxis
-							dataKey="date"
-							tickFormatter={(tick) =>
-								new Date(tick).toLocaleDateString('en-En', {
-									day: 'numeric',
-									month: 'short',
-								})
-							}
-						/>
+						<XAxis dataKey="date" />
 						<YAxis
 							tickFormatter={(tick) =>
 								new Intl.NumberFormat('ru-RU', {
@@ -36,6 +30,7 @@ class CountryChart extends Component {
 							horizontal={false}
 							vertical={false}
 						/>
+						<Legend />
 						<Line type="monotone" dataKey="cases" stroke="blue" />
 						<Line type="monotone" dataKey="deaths" stroke="red" />
 						<Line
@@ -43,6 +38,7 @@ class CountryChart extends Component {
 							dataKey="recovered"
 							stroke="green"
 						/>
+						<Tooltip />
 					</LineChart>
 				</ResponsiveContainer>
 			</div>

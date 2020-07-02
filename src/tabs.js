@@ -20,7 +20,7 @@ import './countries.css';
 class Tabs extends React.Component {
 	panes = (tabNumber, color) => {
 		return (
-			<div>
+			<TabPane tabId={tabNumber}>
 				<Row>
 					<Col sm="12">
 						<CovidData
@@ -31,45 +31,15 @@ class Tabs extends React.Component {
 				</Row>
 				<Row>
 					<Col>
-						<InputGroup>
-							<InputGroupAddon addonType="prepend">
-								<Button
-									onClick={() => this.props.onSortClick()}
-									color={this.props.colorType}
-								>
-									<i
-										className={
-											this.props.order === -1
-												? 'fas fa-sort-numeric-up-alt'
-												: 'fas fa-sort-numeric-up'
-										}
-									></i>
-								</Button>
-							</InputGroupAddon>
-							<Input
-								placeholder="search..."
-								onChange={(text) =>
-									this.props.filterCountries(
-										text.target.value
-									)
-								}
-							/>
-						</InputGroup>
+						<Countries
+							dataToShow={this.props.whatToShow}
+							colorState={color}
+							countriesDataArray={this.props.countriesData}
+							onSortClick={this.props.onSortClick}
+						/>
 					</Col>
 				</Row>
-				<TabPane tabId={tabNumber}>
-					<Row>
-						<Col>
-							<Countries
-								dataToShow={this.props.whatToShow}
-								colorState={color}
-								countriesDataArray={this.props.countriesData}
-								onSortClick={this.props.onSortClick}
-							/>
-						</Col>
-					</Row>
-				</TabPane>
-			</div>
+			</TabPane>
 		);
 	};
 

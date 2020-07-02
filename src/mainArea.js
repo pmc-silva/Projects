@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Spinner } from 'reactstrap';
+import { Container, Row, Col, Spinner, Input } from 'reactstrap';
 import Map from './Map/map';
 import Chart from './Charts/chart';
 import Tabs from './tabs';
 import { NovelCovid } from 'novelcovid';
 import './mainArea.css';
+import InputBar from './inputBar';
 
 class MainArea extends Component {
 	constructor(props) {
@@ -158,6 +159,18 @@ class MainArea extends Component {
 		return (
 			<Container className="bg-dark" fluid>
 				<Row>
+					<InputBar
+						onSortClick={() =>
+							this.handleSortClick(filteredCountries, true)
+						}
+						order={sortOrder}
+						filterCountries={(text) =>
+							this.filterCountriesData(text, countriesData)
+						}
+						colorType={this.setColorType(color)}
+					></InputBar>
+				</Row>
+				<Row>
 					<Col md="4" className="bg-white" id="covidList">
 						{Object.keys(allData).length > 0 &&
 						Object.keys(countriesData).length > 0 ? (
@@ -165,12 +178,6 @@ class MainArea extends Component {
 								onTabChange={(tab) => {
 									this.changeData(tab, countriesData);
 								}}
-								onSortClick={() =>
-									this.handleSortClick(
-										filteredCountries,
-										true
-									)
-								}
 								order={sortOrder}
 								colorState={color}
 								colorType={this.setColorType(color)}
@@ -178,12 +185,6 @@ class MainArea extends Component {
 								tab={tab}
 								allData={allData[dataToShow]}
 								countriesData={filteredCountries}
-								filterCountries={(text) =>
-									this.filterCountriesData(
-										text,
-										countriesData
-									)
-								}
 							></Tabs>
 						) : (
 							<Spinner color="dark" />

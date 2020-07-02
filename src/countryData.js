@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col, Button } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import { NovelCovid } from 'novelcovid';
 import CountryChart from './Charts/countryChart';
+import './countryData.css';
 
 class CountryData extends Component {
 	constructor(props) {
@@ -29,31 +31,29 @@ class CountryData extends Component {
 	}
 
 	sendHistoricalData = (historyArray) => {
-		let result = [];
 		const tempHistoricalArray = historyArray.timeline;
 
-		//console.log(Object.keys(tempHistoricalArray));
+		const dates = Object.keys(tempHistoricalArray.cases);
 
-		for (const [type] of Object.entries(tempHistoricalArray)) {
-			for (const [date, value] of Object.entries(
-				tempHistoricalArray[type]
-			)) {
-				result.push({
-					date: `${date}`,
-					[type]: `${value}`,
-				});
-			}
-		}
-		return result;
+		return dates.map((item) => ({
+			date: new Date(item).toLocaleDateString('en-En', {
+				day: 'numeric',
+				month: 'short',
+			}),
+			cases: tempHistoricalArray.cases[item],
+			deaths: tempHistoricalArray.deaths[item],
+			recovered: tempHistoricalArray.recovered[item],
+		}));
 	};
+
 	render() {
 		const { historicalData } = this.state;
 		return (
-			<Container className="bg-dark" fluid={true}>
+			<Container className="bg-dark" fluid>
 				{Object.keys(this.state.countriesData).length > 0 ? (
 					<div id="countryDataContainer">
 						<Row>
-							<Col xs="6">
+							<Col xs={{ span: 6, offset: 2 }}>
 								<Row>
 									<h1 className="text-white">
 										{this.state.countriesData.country}
@@ -70,14 +70,15 @@ class CountryData extends Component {
 									></img>
 								</Row>
 							</Col>
-							<Col xs="3">
+							<Col xs={{ span: 3, offset: 2 }}>
 								<Row className="text-white">
 									<h6>
-										LIVE{' '}
+										LIVE{'  '}
 										<i
 											className="fa fa-circle text-danger"
 											aria-hidden="true"
-										></i>{' '}
+										></i>
+										{'  '}
 										{new Date(
 											this.state.countriesData.updated
 										).toLocaleDateString()}
@@ -85,7 +86,7 @@ class CountryData extends Component {
 								</Row>
 								<Row>
 									<p className="text-info">
-										Cases:{' '}
+										Cases:{'  '}
 										{new Intl.NumberFormat('ru-RU', {
 											style: 'decimal',
 										}).format(
@@ -95,7 +96,7 @@ class CountryData extends Component {
 								</Row>
 								<Row>
 									<p className="text-danger">
-										Deaths:{' '}
+										Deaths:{'  '}
 										{new Intl.NumberFormat('ru-RU', {
 											style: 'decimal',
 										}).format(
@@ -105,7 +106,7 @@ class CountryData extends Component {
 								</Row>
 								<Row>
 									<p className="text-warning">
-										Tests:{' '}
+										Tests:{'  '}
 										{new Intl.NumberFormat('ru-RU', {
 											style: 'decimal',
 										}).format(
@@ -114,7 +115,7 @@ class CountryData extends Component {
 									</p>
 								</Row>
 							</Col>
-							<Col xs="3">
+							<Col xs={{ span: 3, offset: 2 }}>
 								<Row>
 									<h6 className="text-white">
 										Per 1 Million
@@ -158,6 +159,11 @@ class CountryData extends Component {
 									this.sendHistoricalData(historicalData)
 								}
 							></CountryChart>
+						</Row>
+						<Row>
+							<Link to={`/`}>
+								<Button id="homeButton">Home</Button>
+							</Link>
 						</Row>
 					</div>
 				) : (
