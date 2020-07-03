@@ -14,7 +14,10 @@ import {
 class CountryChart extends Component {
 	render() {
 		return (
-			<div id="countryChart">
+			<div
+				id="countryChart"
+				className={this.props.dayLight ? 'bg-white' : 'bg-dark'}
+			>
 				<ResponsiveContainer maxHeight="50vh">
 					<LineChart data={this.props.historyArray()}>
 						<XAxis dataKey="date" />

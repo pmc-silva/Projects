@@ -7,7 +7,6 @@ import {
 	XAxis,
 	YAxis,
 	ResponsiveContainer,
-	Legend,
 	ReferenceLine,
 } from 'recharts';
 import './chart.css';
@@ -16,12 +15,14 @@ class Chart extends Component {
 	render() {
 		return (
 			<div id="container">
-				<ResponsiveContainer>
+				<ResponsiveContainer
+					className={this.props.dayLight ? 'bg-white' : 'bg-dark'}
+				>
 					<AreaChart
 						data={this.props.historyArray()}
 						margin={{
-							top: 10,
-							right: 30,
+							top: 40,
+							right: 20,
 							left: 30,
 							bottom: 0,
 						}}
@@ -40,6 +41,7 @@ class Chart extends Component {
 									month: 'short',
 								})
 							}
+							stroke={this.props.dayLight ? 'black' : 'white'}
 						/>
 						<YAxis
 							tickFormatter={(tick) =>
@@ -47,16 +49,32 @@ class Chart extends Component {
 									style: 'decimal',
 								}).format(tick / 1000) + ' k'
 							}
+							stroke={this.props.dayLight ? 'black' : 'white'}
 						/>
-						<Tooltip />
+						<Tooltip
+							labelFormatter={(value) =>
+								new Date(value).toLocaleDateString('en-En', {
+									day: 'numeric',
+									month: 'short',
+								})
+							}
+							wrapperStyle={{ backgroundColor: 'black' }}
+							itemStyle={{
+								color: 'black',
+							}}
+							labelStyle={{
+								color: this.props.color,
+							}}
+						/>
 						<Area
 							name={this.props.dataToShow}
 							type="monotone"
 							dataKey="value"
-							stroke="none"
+							stroke={
+								this.props.dayLight ? this.props.color : 'white'
+							}
 							fill={this.props.color}
 						/>
-						<Legend iconType="square" verticalAlign="top" />
 						<ReferenceLine />
 					</AreaChart>
 				</ResponsiveContainer>

@@ -49,126 +49,174 @@ class CountryData extends Component {
 	render() {
 		const { historicalData } = this.state;
 		return (
-			<Container className="bg-dark" fluid>
-				{Object.keys(this.state.countriesData).length > 0 ? (
-					<div id="countryDataContainer">
-						<Row>
-							<Col xs={{ span: 6, offset: 2 }}>
+			<Container
+				className={
+					this.props.location.dayLight ? 'bg-dark' : 'bg-white'
+				}
+				fluid
+			>
+				{Object.keys(this.state.countriesData).length > 0
+					? (console.log(this.props.location.dayLight),
+					  (
+							<div id="countryDataContainer">
 								<Row>
-									<h1 className="text-white">
-										{this.state.countriesData.country}
-									</h1>
+									<Col xs={{ span: 6, offset: 2 }}>
+										<Row>
+											<h1
+												className={
+													this.props.location.dayLight
+														? 'text-white'
+														: 'text.dark'
+												}
+											>
+												{
+													this.state.countriesData
+														.country
+												}
+											</h1>
+										</Row>
+										<Row>
+											<img
+												alt="Country flag"
+												src={
+													this.state.countriesData
+														.countryInfo.flag
+												}
+												id="countryFlag"
+											></img>
+										</Row>
+									</Col>
+									<Col xs={{ span: 3, offset: 2 }}>
+										<Row
+											className={
+												this.props.location.dayLight
+													? 'text-white'
+													: 'text.dark'
+											}
+										>
+											<h6>
+												LIVE{'  '}
+												<i
+													className="fa fa-circle text-danger"
+													aria-hidden="true"
+												></i>
+												{'  '}
+												{new Date(
+													this.state.countriesData.updated
+												).toLocaleDateString()}
+											</h6>
+										</Row>
+										<Row>
+											<p className="text-info">
+												Cases:{'  '}
+												{new Intl.NumberFormat(
+													'ru-RU',
+													{
+														style: 'decimal',
+													}
+												).format(
+													`${this.state.countriesData.todayCases}`
+												)}
+											</p>
+										</Row>
+										<Row>
+											<p className="text-danger">
+												Deaths:{'  '}
+												{new Intl.NumberFormat(
+													'ru-RU',
+													{
+														style: 'decimal',
+													}
+												).format(
+													`${this.state.countriesData.todayDeaths}`
+												)}
+											</p>
+										</Row>
+										<Row>
+											<p className="text-warning">
+												Tests:{'  '}
+												{new Intl.NumberFormat(
+													'ru-RU',
+													{
+														style: 'decimal',
+													}
+												).format(
+													`${this.state.countriesData.tests}`
+												)}
+											</p>
+										</Row>
+									</Col>
+									<Col xs={{ span: 3, offset: 2 }}>
+										<Row>
+											<h6
+												className={
+													this.props.location.dayLight
+														? 'text-white'
+														: 'text.dark'
+												}
+											>
+												Per 1 Million
+											</h6>
+										</Row>
+										<Row>
+											<p className="text-info">
+												Cases:{' '}
+												{new Intl.NumberFormat(
+													'ru-RU',
+													{
+														style: 'decimal',
+													}
+												).format(
+													`${this.state.countriesData.casesPerOneMillion}`
+												)}
+											</p>
+										</Row>
+										<Row>
+											<p className="text-danger">
+												Deaths:{' '}
+												{new Intl.NumberFormat(
+													'ru-RU',
+													{
+														style: 'decimal',
+													}
+												).format(
+													`${this.state.countriesData.deathsPerOneMillion}`
+												)}
+											</p>
+										</Row>
+										<Row>
+											<p className="text-warning">
+												Tests:{' '}
+												{new Intl.NumberFormat(
+													'ru-RU',
+													{
+														style: 'decimal',
+													}
+												).format(
+													`${this.state.countriesData.testsPerOneMillion}`
+												)}
+											</p>
+										</Row>
+									</Col>
 								</Row>
 								<Row>
-									<img
-										alt="Country flag"
-										src={
-											this.state.countriesData.countryInfo
-												.flag
+									<CountryChart
+										historyArray={() =>
+											this.sendHistoricalData(
+												historicalData
+											)
 										}
-										id="countryFlag"
-									></img>
-								</Row>
-							</Col>
-							<Col xs={{ span: 3, offset: 2 }}>
-								<Row className="text-white">
-									<h6>
-										LIVE{'  '}
-										<i
-											className="fa fa-circle text-danger"
-											aria-hidden="true"
-										></i>
-										{'  '}
-										{new Date(
-											this.state.countriesData.updated
-										).toLocaleDateString()}
-									</h6>
+										dayLight={this.props.location.dayLight}
+									></CountryChart>
 								</Row>
 								<Row>
-									<p className="text-info">
-										Cases:{'  '}
-										{new Intl.NumberFormat('ru-RU', {
-											style: 'decimal',
-										}).format(
-											`${this.state.countriesData.todayCases}`
-										)}
-									</p>
+									<Link to={`/`}>
+										<Button id="homeButton">Home</Button>
+									</Link>
 								</Row>
-								<Row>
-									<p className="text-danger">
-										Deaths:{'  '}
-										{new Intl.NumberFormat('ru-RU', {
-											style: 'decimal',
-										}).format(
-											`${this.state.countriesData.todayDeaths}`
-										)}
-									</p>
-								</Row>
-								<Row>
-									<p className="text-warning">
-										Tests:{'  '}
-										{new Intl.NumberFormat('ru-RU', {
-											style: 'decimal',
-										}).format(
-											`${this.state.countriesData.tests}`
-										)}
-									</p>
-								</Row>
-							</Col>
-							<Col xs={{ span: 3, offset: 2 }}>
-								<Row>
-									<h6 className="text-white">
-										Per 1 Million
-									</h6>
-								</Row>
-								<Row>
-									<p className="text-info">
-										Cases:{' '}
-										{new Intl.NumberFormat('ru-RU', {
-											style: 'decimal',
-										}).format(
-											`${this.state.countriesData.casesPerOneMillion}`
-										)}
-									</p>
-								</Row>
-								<Row>
-									<p className="text-danger">
-										Deaths:{' '}
-										{new Intl.NumberFormat('ru-RU', {
-											style: 'decimal',
-										}).format(
-											`${this.state.countriesData.deathsPerOneMillion}`
-										)}
-									</p>
-								</Row>
-								<Row>
-									<p className="text-warning">
-										Tests:{' '}
-										{new Intl.NumberFormat('ru-RU', {
-											style: 'decimal',
-										}).format(
-											`${this.state.countriesData.testsPerOneMillion}`
-										)}
-									</p>
-								</Row>
-							</Col>
-						</Row>
-						<Row>
-							<CountryChart
-								historyArray={() =>
-									this.sendHistoricalData(historicalData)
-								}
-							></CountryChart>
-						</Row>
-						<Row>
-							<Link to={`/`}>
-								<Button id="homeButton">Home</Button>
-							</Link>
-						</Row>
-					</div>
-				) : (
-					'Loading'
-				)}
+							</div>
+					  ))
+					: 'Loading'}
 			</Container>
 		);
 	}

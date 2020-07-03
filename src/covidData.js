@@ -15,7 +15,10 @@ class CovidData extends Component {
 
 	render() {
 		return (
-			<div align="center">
+			<div
+				align="center"
+				className={this.props.dayLight ? 'bg-white' : 'bg-dark'}
+			>
 				<h2>
 					<p
 						className={this.setParagraphColor(

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Spinner, Input } from 'reactstrap';
+import { Container, Row, Col, Spinner } from 'reactstrap';
 import Map from './Map/map';
 import Chart from './Charts/chart';
 import Tabs from './tabs';
@@ -16,6 +16,7 @@ class MainArea extends Component {
 			dataToShow: 'cases',
 			searchText: null,
 			sortOrder: 1,
+			dayLight: true,
 			allData: {},
 			countriesData: {},
 			historicalData: {},
@@ -144,6 +145,11 @@ class MainArea extends Component {
 				return 'primary';
 		}
 	};
+	setLightMode = () => {
+		const dayLight = !this.state.dayLight;
+		this.setState({ dayLight: dayLight });
+		console.log(this.state.dayLight);
+	};
 
 	render() {
 		const {
@@ -155,9 +161,13 @@ class MainArea extends Component {
 			sortOrder,
 			historicalData,
 			filteredCountries,
+			dayLight,
 		} = this.state;
 		return (
-			<Container className="bg-dark" fluid>
+			<Container
+				className={this.state.dayLight ? 'bg-dark' : 'bg-white'}
+				fluid
+			>
 				<Row>
 					<InputBar
 						onSortClick={() =>
@@ -168,10 +178,16 @@ class MainArea extends Component {
 							this.filterCountriesData(text, countriesData)
 						}
 						colorType={this.setColorType(color)}
+						dayLight={dayLight}
+						setLightMode={() => this.setLightMode()}
 					></InputBar>
 				</Row>
 				<Row>
-					<Col md="4" className="bg-white" id="covidList">
+					<Col
+						md="4"
+						className={this.state.dayLight ? 'bg-white' : 'bg-dark'}
+						id="covidList"
+					>
 						{Object.keys(allData).length > 0 &&
 						Object.keys(countriesData).length > 0 ? (
 							<Tabs
@@ -185,9 +201,12 @@ class MainArea extends Component {
 								tab={tab}
 								allData={allData[dataToShow]}
 								countriesData={filteredCountries}
+								dayLight={dayLight}
 							></Tabs>
 						) : (
-							<Spinner color="dark" />
+							<Spinner
+								color={this.state.dayLight ? 'dark' : 'white'}
+							/>
 						)}
 					</Col>
 					<Col>
@@ -197,9 +216,14 @@ class MainArea extends Component {
 									color={color}
 									whatToShow={dataToShow}
 									valuesArray={this.changeCountriesData()}
+									dayLight={dayLight}
 								/>
 							) : (
-								<Spinner color="dark" />
+								<Spinner
+									color={
+										this.state.dayLight ? 'dark' : 'white'
+									}
+								/>
 							)}
 						</Row>
 
@@ -211,9 +235,14 @@ class MainArea extends Component {
 									historyArray={() =>
 										this.sendHistoricalData(historicalData)
 									}
+									dayLight={dayLight}
 								/>
 							) : (
-								<Spinner color="dark" />
+								<Spinner
+									color={
+										this.state.dayLight ? 'dark' : 'white'
+									}
+								/>
 							)}
 						</Row>
 					</Col>

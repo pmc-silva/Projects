@@ -7,10 +7,19 @@ class Countries extends Component {
 	render() {
 		return (
 			<div id="countriesList">
-				<Table hover striped size="sm">
+				<Table
+					hover
+					striped
+					className={this.props.dayLight ? 'bg-white' : 'bg-dark'}
+				>
 					<tbody>
 						{this.props.countriesDataArray.map((item) => (
-							<Link to={`/countryData/${item.country}`}>
+							<Link
+								to={{
+									pathname: `/countryData/${item.country}`,
+									dayLight: this.props.dayLight,
+								}}
+							>
 								<Row>
 									<Col>
 										<tr>

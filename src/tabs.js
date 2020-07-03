@@ -7,10 +7,6 @@ import {
 	NavLink,
 	TabContent,
 	TabPane,
-	Input,
-	InputGroup,
-	InputGroupAddon,
-	Button,
 } from 'reactstrap';
 import classNames from 'classnames';
 import CovidData from './covidData';
@@ -26,6 +22,7 @@ class Tabs extends React.Component {
 						<CovidData
 							colorState={this.props.colorState}
 							allDataArray={this.props.allData}
+							dayLight={this.props.dayLight}
 						/>
 					</Col>
 				</Row>
@@ -36,6 +33,7 @@ class Tabs extends React.Component {
 							colorState={color}
 							countriesDataArray={this.props.countriesData}
 							onSortClick={this.props.onSortClick}
+							dayLight={this.props.dayLight}
 						/>
 					</Col>
 				</Row>
@@ -65,7 +63,7 @@ class Tabs extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<div className={this.props.dayLight ? 'bg-white' : 'bg-dark'}>
 				<Nav tabs justified>
 					{this.navItems('1', 'Cases', 'primary')}
 					{this.navItems('2', 'Deaths', 'danger')}

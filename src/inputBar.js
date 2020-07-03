@@ -37,7 +37,17 @@ class InputBar extends Component {
 										text.target.value
 									)
 								}
+								className={
+									this.props.dayLight ? 'bg-white' : 'bg-dark'
+								}
 							/>
+							<InputGroupAddon addonType="append">
+								<Button
+									onClick={() => this.props.setLightMode()}
+								>
+									Change layout color
+								</Button>
+							</InputGroupAddon>
 						</InputGroup>
 					</Col>
 				</Row>
