@@ -216,7 +216,6 @@ class MainArea extends Component {
 									color={color}
 									whatToShow={dataToShow}
 									valuesArray={this.changeCountriesData()}
-									dayLight={dayLight}
 								/>
 							) : (
 								<Spinner

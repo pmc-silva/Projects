@@ -17,6 +17,7 @@ class Chart extends Component {
 			<div id="container">
 				<ResponsiveContainer
 					className={this.props.dayLight ? 'bg-white' : 'bg-dark'}
+					xs="12"
 				>
 					<AreaChart
 						data={this.props.historyArray()}

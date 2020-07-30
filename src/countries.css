@@ -1,12 +1,11 @@
 #countriesList {
-	height: 76vh;
-	width: 30vw;
+	height: 80vh;
 	overflow-y: auto;
 }
 
-#countriesListTabs {
+/* #countriesListTabs {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	margin: 10px;
-}
+} */

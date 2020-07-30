@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import MainArea from './mainArea';
 import CountryData from './countryData';
+import NoMatch from './nomatch';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 class App extends Component {
@@ -14,6 +15,7 @@ class App extends Component {
 							path="/countryData/:country"
 							component={CountryData}
 						/>
+						<Route component={NoMatch} />
 					</Switch>
 				</div>
 			</Router>

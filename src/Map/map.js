@@ -39,12 +39,7 @@ class Map extends Component {
 	}
 
 	render() {
-		return (
-			<div
-				id="mapid"
-				className={this.props.layoutColor ? 'bg-white' : 'bg-dark'}
-			/>
-		);
+		return <div id="mapid" />;
 	}
 }
 
